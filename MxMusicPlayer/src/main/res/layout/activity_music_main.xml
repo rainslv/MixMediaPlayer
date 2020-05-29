@@ -11,7 +11,7 @@
         android:id="@+id/main_top_linlayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/reddemo">
+        android:background="@color/colorPrimary">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -37,7 +37,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
-                    android:text="我的音乐"
+                    android:text="本地音乐"
                     android:textColor="@color/white"
                     android:textSize="25dp" />
 
