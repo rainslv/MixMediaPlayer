@@ -41,9 +41,7 @@
                     android:textColor="@color/white"
                     android:textSize="25dp" />
 
-
             </RelativeLayout>
-
 
         </LinearLayout>
 
@@ -75,9 +73,7 @@
                     android:layout_marginRight="10dp"
                     android:src="@mipmap/ic_menu_search" />
 
-
             </RelativeLayout>
-
 
         </LinearLayout>
 
@@ -89,6 +85,5 @@
         android:layout_height="match_parent">
 
     </android.support.v4.view.ViewPager>
-
 
 </LinearLayout>

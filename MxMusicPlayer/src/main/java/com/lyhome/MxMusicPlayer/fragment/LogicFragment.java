@@ -47,9 +47,7 @@ public class LogicFragment extends Fragment {
 
     private String TAG = "HelloActivity";                                       //下面两个属性和获取mediadatabase的权限有关系，可查阅代码块下的链接
     private PermissionHelper permissionHelper;
-    private ListView listView;                                                          //创建ListView的对象
     private List<Music> musicList;                                                          //将Music放入List集合中，并实例化List<Music>
-    private List<ListView> listViewList;
     private MusicAdapter adapter;
 
     public LogicFragment() {
@@ -91,13 +89,13 @@ public class LogicFragment extends Fragment {
 
 
         //对Listview进行监听
-        listView = view.findViewById(R.id.logic_lv);
+        //创建ListView的对象
+        ListView listView = view.findViewById(R.id.logic_lv);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {             //将listView的每一个item实现监听
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                for (Music m : Common.musicList
-                        ) {
+                for (Music m : Common.musicList) {
                     m.isPlaying = false;
                 }
                 Common.musicList.get(position).isPlaying = true;
@@ -122,8 +120,7 @@ public class LogicFragment extends Fragment {
 调用Context的getSystemService()方法获取到。
 getSystemService()方法接受的一个字符串参数用于确定系统的的哪一个服务。
  */
-                NotificationManager notificationManager =
-                        (NotificationManager)  (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
 /*
 调用NotificationChannel创建通知渠道实例
 并为它设置属性
@@ -135,8 +132,7 @@ getSystemService()方法接受的一个字符串参数用于确定系统的的�
 //用户可看到的通知描述
                 String description = "";
 //构建NotificationChannel实例
-                NotificationChannel notificationChannel =
-                        new NotificationChannel(id2,name,NotificationManager.IMPORTANCE_HIGH);
+                NotificationChannel notificationChannel = new NotificationChannel(id2, name, NotificationManager.IMPORTANCE_HIGH);
 //                NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
 //配置通知渠道的属性
                 notificationChannel.setDescription(description);
@@ -145,11 +141,11 @@ getSystemService()方法接受的一个字符串参数用于确定系统的的�
                 notificationChannel.setLightColor(Color.RED);
 //设置通知出现时的震动
                 notificationChannel.enableVibration(true);
-                notificationChannel.setVibrationPattern(new long[]{100,200,300,400,500,400,300,200,100});
+                notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 100});
 //在notificationManager中创建通知渠道
                 notificationManager.createNotificationChannel(notificationChannel);
 
-                Notification.Builder builder = new Notification.Builder(getActivity(),id2);
+                Notification.Builder builder = new Notification.Builder(getActivity(), id2);
 //                builder.setContent(remoteViews);
                 builder.setSmallIcon(R.mipmap.ic_launcher);
                 builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
@@ -187,7 +183,7 @@ getSystemService()方法接受的一个字符串参数用于确定系统的的�
         //获取游标
         Cursor cursor = resolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER); //创建游标MediaStore.Audio.Media.EXTERNAL_CONTENT_URI获取音频的文件，后面的是关于select筛选条件，这里填土null就可以了
         //游标归零
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));            //获取歌名
                 String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));         //获取歌唱者
@@ -205,8 +201,8 @@ getSystemService()方法接受的一个字符串参数用于确定系统的的�
                 music.albumBip = getAlbumArt(albumID);
                 //将music放入musicList集合中
                 Common.musicList.add(music);
-            }  while (cursor.moveToNext());
-        }else {
+            } while (cursor.moveToNext());
+        } else {
             Toast.makeText(getActivity(), "本地没有音乐哦", Toast.LENGTH_SHORT).show();
         }
         cursor.close();                                                                         //关闭游标
@@ -216,7 +212,7 @@ getSystemService()方法接受的一个字符串参数用于确定系统的的�
     private Bitmap getAlbumArt(int album_id) {                              //前面我们只是获取了专辑图片id，在这里实现通过id获取掉专辑图片
         String mUriAlbums = "content://media/external/audio/albums";
         String[] projection = new String[]{"album_art"};
-        Cursor cur = getActivity().getContentResolver().query(Uri.parse(mUriAlbums + "/" + Integer.toString(album_id)), projection, null, null, null);
+        Cursor cur = getActivity().getContentResolver().query(Uri.parse(mUriAlbums + "/" + album_id), projection, null, null, null);
         String album_art = null;
         if (cur.getCount() > 0 && cur.getColumnCount() > 0) {
             cur.moveToNext();

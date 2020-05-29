@@ -35,7 +35,6 @@ public class MainMusicActivity extends AppCompatActivity implements View.OnClick
     private ViewPager viewPager;
     private ImageView menuImagv;
     private ImageView seachImagv;
-    private Calendar calendar;
     //将Fragment放入List集合中，存放fragment对象
     private List<Fragment> fragmentList = new ArrayList<>();
 
@@ -107,6 +106,7 @@ public class MainMusicActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         int id = v.getId();
+        Calendar calendar;
         if (id == R.id.main_logic_tv) {//实现点击TextView切换fragment
             viewPager.setCurrentItem(0);
         } else if (id == R.id.main_online_tv) {
@@ -157,7 +157,7 @@ public class MainMusicActivity extends AppCompatActivity implements View.OnClick
             builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-//                    Toast.makeText(MainMusicActivity.this, "且看曼城分分 钟打你脸", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainMusicActivity.this, "自定义消息", Toast.LENGTH_SHORT).show();
 
                 }
             });
