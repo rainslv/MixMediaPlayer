@@ -200,7 +200,8 @@ getSystemService()方法接受的一个字符串参数用于确定系统的的�
                 music.path = path;
                 music.albumBip = getAlbumArt(albumID);
                 //将music放入musicList集合中
-                Common.musicList.add(music);
+                if (music.path.endsWith(".mp3"))
+                    Common.musicList.add(music);
             } while (cursor.moveToNext());
         } else {
             Toast.makeText(getActivity(), "本地没有音乐哦", Toast.LENGTH_SHORT).show();
