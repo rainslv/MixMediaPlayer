@@ -3,6 +3,12 @@ package com.lyhome.MxMusicPlayer;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.support.annotation.ColorInt;
+import android.support.annotation.FloatRange;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -14,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -37,12 +44,38 @@ public class MainMusicActivity extends AppCompatActivity implements View.OnClick
     private ImageView seachImagv;
     //将Fragment放入List集合中，存放fragment对象
     private List<Fragment> fragmentList = new ArrayList<>();
+    public static int mainColor = -1;
+
+    @ColorInt
+    public static int shiftColor(@ColorInt int color, @FloatRange(from = 0.0f, to = 2.0f) float by) {
+        if (by == 1f) {
+            return color;
+        }
+        float[] hsv = new float[3];
+        Color.colorToHSV(color, hsv);
+        hsv[2] *= by; // value component
+        return Color.HSVToColor(hsv);
+    }
+
+    @ColorInt
+    public static int shiftColorDown(@ColorInt int color) {
+        return shiftColor(color, 0.9f);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_main);
-
+        final Intent intent = getIntent();
+        if (intent.hasExtra("MAIN_COLOR"))
+            mainColor = intent.getIntExtra("MAIN_COLOR", -1);
+        final LinearLayout main_top_linlayout = findViewById(R.id.main_top_linlayout);
+        if (mainColor != -1)
+            main_top_linlayout.setBackgroundColor(mainColor);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(mainColor));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            getWindow().setStatusBarColor(shiftColorDown(mainColor));
         //绑定id
         bangdingID();
         //设置监听

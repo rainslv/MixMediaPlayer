@@ -30,6 +30,7 @@ import android.widget.ListView;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.lyhome.MxMusicPlayer.MainMusicActivity;
 import com.lyhome.MxMusicPlayer.MusicActivity;
 import com.lyhome.MxMusicPlayer.R;
 import com.lyhome.MxMusicPlayer.adapter.MusicAdapter;
@@ -105,6 +106,7 @@ public class LogicFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MusicActivity.class);
                 //使用putExtra（）传值
                 intent.putExtra("position", position);
+                intent.putExtra("MAIN_COLOR", MainMusicActivity.mainColor);
                 startActivity(intent);
 
                 PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

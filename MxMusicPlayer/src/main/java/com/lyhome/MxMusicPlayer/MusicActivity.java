@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +60,7 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
     private RotateAnimation rotateAnimation = null;
     private RotateAnimation rotateAnimation2 = null;
     private String TAG = "MusicActivity";
+    private int mainColor = -1;
     //Handler实现向主线程进行传值
     private Handler handler = new Handler() {
         @Override
@@ -80,6 +83,12 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
 
         Intent intent = getIntent();                                                    //通过getIntent()方法实现intent信息的获取
         position = intent.getIntExtra("position", 0);            //获取position
+        if (intent.hasExtra("MAIN_COLOR"))
+            mainColor = intent.getIntExtra("MAIN_COLOR", -1);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(mainColor));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            getWindow().setStatusBarColor(MainMusicActivity.shiftColorDown(mainColor));
 
         mediaPlayer = new MediaPlayer();
         prevAndnextplaying(Common.musicList.get(position).path);
@@ -134,7 +143,7 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    if(!mediaPlayer.isPlaying()){
+                    if (!mediaPlayer.isPlaying()) {
                         setPlayMode();
                     }
 
@@ -254,15 +263,15 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
                     needleImagv.startAnimation(rotateAnimation2);
                     prevAndnextplaying(Common.musicList.get(position).path);
                 }
-            }else {
-                if(buttonWitch ==1){
+            } else {
+                if (buttonWitch == 1) {
                     position--;
                     mediaPlayer.reset();
                     objectAnimator.pause();
                     needleImagv.startAnimation(rotateAnimation2);
                     prevAndnextplaying(Common.musicList.get(position).path);
 
-                }else if(buttonWitch ==2){
+                } else if (buttonWitch == 2) {
                     position++;
                     mediaPlayer.reset();
                     objectAnimator.pause();
@@ -369,7 +378,7 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
     protected void onPause() {
         super.onPause();
         for (Music music : Common.musicList
-                ) {
+        ) {
             music.isPlaying = false;
         }
         Common.musicList.get(position).isPlaying = true;
