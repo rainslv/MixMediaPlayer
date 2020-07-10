@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.lyhome.MxMusicPlayer.MainMusicActivity;
 import com.lyhome.MxMusicPlayer.R;
 import com.lyhome.MxMusicPlayer.entity.Music;
 import com.lyhome.MxMusicPlayer.utils.Common;
@@ -70,7 +71,11 @@ public class MusicAdapter extends BaseAdapter {
         }
         //赋值 准确的是绑定赋值的中介
         viewHolder.titleTv.setText(Common.musicList.get(position).title);
+        if (MainMusicActivity.titleFontSize != -1)
+            viewHolder.titleTv.setTextSize(MainMusicActivity.titleFontSize);
         viewHolder.artistTv.setText(Common.musicList.get(position).artist + "-" + Common.musicList.get(position).album);
+        if (MainMusicActivity.artistFontSize != -1)
+            viewHolder.artistTv.setTextSize(MainMusicActivity.artistFontSize);
         viewHolder.albumImgv.setImageBitmap(Common.musicList.get(position).albumBip);
         if (Common.musicList.get(position).isPlaying) {
             viewHolder.isPlayingView.setVisibility(View.VISIBLE);

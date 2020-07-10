@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
 import android.support.v4.app.Fragment;
@@ -14,7 +15,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 
 import com.lyhome.MxMusicPlayer.adapter.MusicPagerAdapter;
 import com.lyhome.MxMusicPlayer.fragment.LogicFragment;
@@ -45,6 +44,9 @@ public class MainMusicActivity extends AppCompatActivity implements View.OnClick
     //将Fragment放入List集合中，存放fragment对象
     private List<Fragment> fragmentList = new ArrayList<>();
     public static int mainColor = -1;
+    private boolean showMainTop = true;
+    public static int titleFontSize = -1;
+    public static int artistFontSize = -1;
 
     @ColorInt
     public static int shiftColor(@ColorInt int color, @FloatRange(from = 0.0f, to = 2.0f) float by) {
@@ -69,9 +71,17 @@ public class MainMusicActivity extends AppCompatActivity implements View.OnClick
         final Intent intent = getIntent();
         if (intent.hasExtra("MAIN_COLOR"))
             mainColor = intent.getIntExtra("MAIN_COLOR", -1);
+        if (intent.hasExtra("SHOW_MAIN_TOP"))
+            showMainTop = intent.getBooleanExtra("SHOW_MAIN_TOP", true);
+        if (intent.hasExtra("MUSIC_TITLE_TEXT_SIZE"))
+            titleFontSize = intent.getIntExtra("MUSIC_TITLE_TEXT_SIZE", 16);
+        if (intent.hasExtra("MUSIC_ARTIST_TEXT_SIZE"))
+            artistFontSize = intent.getIntExtra("MUSIC_ARTIST_TEXT_SIZE", 12);
         final LinearLayout main_top_linlayout = findViewById(R.id.main_top_linlayout);
         if (mainColor != -1)
             main_top_linlayout.setBackgroundColor(mainColor);
+        if (!showMainTop)
+            main_top_linlayout.setVisibility(View.GONE);
         if (getSupportActionBar() != null)
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(mainColor));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
